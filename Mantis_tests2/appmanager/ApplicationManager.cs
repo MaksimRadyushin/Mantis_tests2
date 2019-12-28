@@ -16,12 +16,23 @@ namespace mantis_tests
         protected IWebDriver driver;
         protected string baseURL;
 
-        public RegistrationHelper Registration { get; set; }
-        public FtpHelper Ftp { get; set; }
-        public JamesHelper James { get; set; }
-        public MailHelper Mail { get; set; }
+        protected RegistrationHelper registrationHelper;
+        protected FtpHelper ftpHelper;
+        protected JamesHelper jamesHelper;
+        protected MailHelper mailHelper;
+        protected LoginHelper loginHelper;
+        protected ProjectHelper projectHelper;
+        protected NavigationHelper navigationHelper;
 
-        private static ThreadLocal<ApplicationManager> app = new ThreadLocal<ApplicationManager>(); //специальный объект, который будет утсанавливать соответствие между текущим потоком и типом ApplicationManager
+        public RegistrationHelper Registration { get { return registrationHelper; } set { registrationHelper = value; } }
+        public FtpHelper Ftp { get { return ftpHelper; } set { ftpHelper = value; } }
+        public JamesHelper James { get { return jamesHelper; } set { jamesHelper = value; } }
+        public MailHelper Mail { get { return mailHelper; } set { mailHelper = value; } }
+        public LoginHelper Login { get { return loginHelper; } set { loginHelper = value; } }
+        public ProjectHelper Project { get { return projectHelper; } set { projectHelper = value; } }
+        public NavigationHelper Navigate { get { return navigationHelper; } set { navigationHelper = value; } }
+
+        private static ThreadLocal<ApplicationManager> app = new ThreadLocal<ApplicationManager>();
 
 
         private ApplicationManager()//конструктор
@@ -29,11 +40,14 @@ namespace mantis_tests
 
             driver = new FirefoxDriver();
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
-            baseURL = "http://localhost:8080";
+            baseURL = "http://localhost:8080/mantisbt-2.19.0";
             Registration = new RegistrationHelper(this);
             Ftp = new FtpHelper(this);
             James = new JamesHelper(this);
             Mail = new MailHelper(this);
+            Login = new LoginHelper(this);
+            Project = new ProjectHelper(this);
+            Navigate = new NavigationHelper(this, baseURL);
 
 
         }
@@ -55,7 +69,7 @@ namespace mantis_tests
             if (!app.IsValueCreated)
             {
                 ApplicationManager newInstance = new ApplicationManager();
-                newInstance.driver.Url = "http://localhost:8080/mantisbt-2.19.0/login_page.php";
+                newInstance.driver.Url = newInstance.baseURL + "/login_page.php";
 
                 app.Value = newInstance;
 

@@ -11,23 +11,26 @@ using OpenQA.Selenium.Support.UI;
 
 namespace mantis_tests
 {
-    public class AccountData : IEquatable<AccountData>, IComparable<AccountData>
+    public class ProjectData : IEquatable<ProjectData>, IComparable<ProjectData>
     {
-        public string Name { get; set; }
-        public string Password { get; set; }
-        public string Email { get; set; }
+        public string Title { get; set; }
+        public string State { get; set; }
+        public string Description { get; set; }
+        public string Visibility { get; set; }
+        public bool InheritGlobalCategory { get; set; }
+        public string Id { get; set; }
 
-        public int CompareTo(AccountData other)
+        public int CompareTo(ProjectData other)
         {
             if (Object.ReferenceEquals(other, null))
             {
                 return 1;
             }
 
-            return Name.CompareTo(other.Name);
+            return Title.CompareTo(other.Title);
         }
 
-        public bool Equals(AccountData other)
+        public bool Equals(ProjectData other)
         {
             if (Object.ReferenceEquals(other, null))
             {
@@ -39,8 +42,7 @@ namespace mantis_tests
                 return true;
             }
 
-            return Name == other.Name;
+            return Title == other.Title;
         }
-
     }
 }
