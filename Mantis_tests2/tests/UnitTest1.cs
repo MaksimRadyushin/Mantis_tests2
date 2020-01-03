@@ -13,16 +13,19 @@ namespace mantis_tests
         [Test]
         public void TestMethod1()
         {
-            AccountData account = new AccountData()
-            {
-                Name = "xxx",
-                Password = "yyy"
-            };
-            Assert.IsFalse(app.James.Verify(account));
-            app.James.Add(account);
-            Assert.IsTrue(app.James.Verify(account));
-            app.James.Delete(account);
-            Assert.IsFalse(app.James.Verify(account));
+            //ProjectData project = new ProjectData()
+            //{
+            //    Title = "Project title",
+            //    Description = "Lorem ipsum dolor sit amet orci aliquam."
+            //};
+            
+            AccountData account = new AccountData() { Name = "administrator", Password = "root" };
+
+            List<ProjectData> allProjects = new List<ProjectData>();
+            allProjects = app.API.GetAllProjects(account);
+            //app.Login.LoginAsUser(account);
+            //app.Navigate.OpenProjectsPage();
+            //app.Project.GetAllProjects();
         }
     }
 }

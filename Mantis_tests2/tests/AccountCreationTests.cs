@@ -35,10 +35,30 @@ namespace mantis_tests
                 Password = "password",
                 Email = "testuser12@localhost.localdomain"
             };
+
+            List<AccountData> accounts = app.Admin.GetAllAccounts();
+
+            AccountData existingAccount = accounts.Find(x => x.Name == account.Name);
+            if (existingAccount != null)
+            {
+                app.Admin.DeleteAccount(existingAccount);
+            }
+
             app.James.Delete(account);
             app.James.Add(account);
 
+            accounts = app.Admin.GetAllAccounts();
+
             app.Registration.Register(account);
+
+            //verification
+            List<AccountData> accountsAfter = app.Admin.GetAllAccounts();
+            accounts.Add(account);
+            accounts.Sort();
+            accountsAfter.Sort();
+
+            Assert.AreEqual(accounts.Count, accountsAfter.Count);
+            Assert.AreEqual(accounts, accountsAfter);
         }
 
         [TearDown]
